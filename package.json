@@ -14,5 +14,9 @@
     "pnpm": "9.9.0",
     "npm": "please_use_pnpm_instead"
   },
-  "packageManager": "pnpm@9.9.0"
+  "packageManager": "pnpm@9.9.0",
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "typescript": "^5.5.4"
+  }
 }
