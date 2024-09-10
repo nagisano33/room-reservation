@@ -25,10 +25,10 @@ select * from rooms;
 
 ## コンテナの停止
 ```bash
-$ docker-compose stop
+$ docker compose stop
 ```
 
 ## コンテナの削除
 ```bash
-$ docker-compose down
+$ docker compose down
 ```
