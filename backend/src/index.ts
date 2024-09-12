@@ -1,58 +1,67 @@
-import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
+import { loadSchemaSync } from "@graphql-tools/load";
+import { addResolversToSchema } from "@graphql-tools/schema";
+import { PrismaClient } from "@prisma/client";
+import { join } from "path";
 
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
-const typeDefs = `#graphql
-  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
+// const schema = loadSchemaSync(
+//   join(import.meta.dirname, "../schemas/schema.graphql"),
+//   {
+//     loaders: [new GraphQLFileLoader()],
+//   }
+// );
 
-  # This "Book" type defines the queryable fields for every book in our data source.
-  type Book {
-    title: String
-    author: String
-  }
+// const books = [
+//   {
+//     title: "The Awakening",
+//     author: "Kate Chopin",
+//   },
+//   {
+//     title: "City of Glass",
+//     author: "Paul Auster",
+//   },
+// ];
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
-  type Query {
-    books: [Book]
-  }
-`;
+// // Resolvers define how to fetch the types defined in your schema.
+// // This resolver retrieves books from the "books" array above.
+// const resolvers = {
+//   Query: {
+//     books: () => books,
+//   },
+// };
 
-const books = [
-  {
-    title: 'The Awakening',
-    author: 'Kate Chopin',
-  },
-  {
-    title: 'City of Glass',
-    author: 'Paul Auster',
-  },
-];
+// const schemaWithResolvers = addResolversToSchema({ schema, resolvers });
+// const server = new ApolloServer({ schema: schemaWithResolvers });
 
-// Resolvers define how to fetch the types defined in your schema.
-// This resolver retrieves books from the "books" array above.
-const resolvers = {
-  Query: {
-    books: () => books,
-  },
-};
+// // Passing an ApolloServer instance to the `startStandaloneServer` function:
+// //  1. creates an Express app
+// //  2. installs your ApolloServer instance as middleware
+// //  3. prepares your app to handle incoming requests
+// const { url } = await startStandaloneServer(server, {
+//   listen: { port: 4000 },
+// });
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
+// console.log(`🚀  Server ready at: ${url}`);
 
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
-const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 },
-});
+// prisma sample
+const prisma = new PrismaClient();
 
-console.log(`🚀  Server ready at: ${url}`);
+async function main() {
+  await prisma.room.create({
+    data: {
+      name: "room a",
+    },
+  });
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
