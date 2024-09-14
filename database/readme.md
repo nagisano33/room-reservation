@@ -1,5 +1,6 @@
 # room-reservation database
 Docker 操作備忘録
+→動作確認できました。
 
 ## コンテナの起動
 ```bash
