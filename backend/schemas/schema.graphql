@@ -1,8 +1,26 @@
-type Book {
-  title: String
-  author: String
+type Query {
+  getRoom: Room
+  getReservations: [Reservation]!
 }
 
-type Query {
-  books: [Book!]!
+type Mutation {
+  addReservation
 }
+
+type Room {
+  id: ID
+  name: String!
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Reservation {
+  id: ID
+  room: Room
+  since: Date
+  until: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
+scalar Date
