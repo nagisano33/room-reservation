@@ -14,7 +14,19 @@ datasource db {
 }
 
 model Room {
-  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String
-  createdAt   DateTime   @default(now())
+  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now())
+  reservations Reservation[]
+}
+
+model Reservation {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    String
+  since     DateTime
+  until     DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
